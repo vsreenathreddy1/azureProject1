@@ -1,22 +1,32 @@
-<!doctype html>
-<html>
-	<body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HomePage</title>
+</head>
+<body>
+<h1>Shevi Jain 1344</h1>
+<br>
 
-		<center>
-		<header> <h1> Home </h1> </header>
-		<header> <h1> Thiruvathilingam, Shakthi Prakash </h1> </header>
-		<header> <h1> 1001518112</h1> </header>
-		<br> Between 5 and 10
-			{% for row in rows %}
-			{{row[1]}} <br>
-			{% endfor %}
-			<br>
-			<br>
-			Between 10 and 50 
-			{% for row in data %}
-			{{row[1]}} <br>
-			{% endfor %}
-	</body>
-	
-	<a href = "/q2search">Q2 </a>
+
+
+
+		 Result of Addition {{ msg }}
+
+
+<br>
+<a href="/upload">Upload csv</a>
+<br>
+<br>
+		 <a href = "/adddata">Result of add</a>
+<br>
+		 <a href = "/display">Display all records</a>
+<br>
+		 <a href = "/multiple">multiple all records</a>
+<br>
+		 <a href = "/net">Starting letter</a>
+<br>
+		 <a href = "/cluster">Kmeans</a>
+
+</body>
 </html>

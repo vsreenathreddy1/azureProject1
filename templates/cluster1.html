@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Shevi Jain 1344</h1>
+<br>
+<form method="POST">
+    Enter the no of clusters <input type="text" name="no_of_clusters">
+    <input type="submit">
+</form>
+
+<table border="1">
+Centroids:
+    {% for rows in data %}
+    <tr>
+        <td>{{ rows }}</td>
+
+    </tr>
+    {% endfor %}
+<img src="data:image/png;base64,{{ data1 }}">
+
+
+
+
+</table>
+<br>
+<a href="/">Home</a>
+</body>
+</html>

@@ -10,16 +10,14 @@ import os
 from sklearn.cluster import KMeans
 from sklearn import preprocessing
 import matplotlib.pyplot as plt
+
 import re
 app = Flask(__name__)
 
-con = sql.connect("database.db")
-#rd = redis.StrictRedis(host='Saii.redis.cache.windows.net', port=6380, db=0,password='7Z6Az0CdHRKCxGb3+a+XLxU52cc9xMIZPkXjJAfAn5U=',ssl=True)
-
 #port = int(os.getenv('PORT', 8000))
 
-myHostname = "Saii.redis.cache.windows.net"
-myPassword = "7Z6Az0CdHRKCxGb3+a+XLxU52cc9xMIZPkXjJAfAn5U="
+myHostname = "shevi.redis.cache.windows.net"
+myPassword = "TzYq7QopogIx7JgZHs2j0V6ZKa88CAlV89TwnLhdAGY="
 
 r = redis.StrictRedis(host=myHostname, port=6380,password=myPassword,ssl=True)
 print(r)
@@ -28,38 +26,38 @@ print(r)
 
 
 '''
-    file = pd.read_csv("./static/all_month.csv")
-    r.set(1,file)
-    #print(r.get(1))
-    user = {"Name":"Pradeep", "Company":"SCTL", "Address":"Mumbai", "Location":"RCP"}
-    
-    
-    hi=pd.read_csv("./static/all_month.csv")
-    print(hi.head())
-    cols=[]
-    for col in hi.columns:
+file = pd.read_csv("./static/all_month.csv")
+r.set(1,file)
+#print(r.get(1))
+user = {"Name":"Pradeep", "Company":"SCTL", "Address":"Mumbai", "Location":"RCP"}
+
+
+hi=pd.read_csv("./static/all_month.csv")
+print(hi.head())
+cols=[]
+for col in hi.columns:
     #print(col)
     cols.append(col)
     r.set(col,hi[col])
     r.hmset('bye',cols,hi[col])
     #print(r.get(col))
-    print(r.get("time"))
-    
-    print(r.get('bye'))
-    r.hmset("pythonDict", user)
-    print(type(r.hgetall("pythonDict")))
-    #print(r.hgetall("pythonDict"))
-    r.set('name',r.hmget("pythonDict","Name"))
-    #print(r.get('name'))
-    #print(r.hmget("pythonDict","Name"))
-    '''
+print(r.get("time"))
+
+print(r.get('bye'))
+r.hmset("pythonDict", user)
+print(type(r.hgetall("pythonDict")))
+#print(r.hgetall("pythonDict"))
+r.set('name',r.hmget("pythonDict","Name"))
+#print(r.get('name'))
+#print(r.hmget("pythonDict","Name"))
 '''
-    for i in range(len(all)):
+'''
+for i in range(len(all)):
     r.set(i, all[i])
-    
-    value = r.get(2)
-    print(value)
-    '''
+
+value = r.get(2)
+print(value)
+'''
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -72,15 +70,15 @@ def upload_csv():
 
 @app.route('/adddata',methods = ['POST', 'GET'])
 def adddata():
-    if request.method == 'POST':
-        con = sql.connect("database.db")
-        csv = request.files['myfile']
-        file = pd.read_csv(csv)
-        start_time=time.time()
-        file.to_sql('Earthquake', con, schema=None, if_exists='replace', index=True, index_label=None, chunksize=None, dtype=None)
-        con.close()
-        end_time=time.time()-start_time
-        return render_template("adddata.html", msg = "Record inserted successfully", time=end_time)
+   if request.method == 'POST':
+       con = sql.connect("database.db")
+       csv = request.files['myfile']
+       file = pd.read_csv(csv)
+       start_time=time.time()
+       file.to_sql('Earthquake', con, schema=None, if_exists='replace', index=True, index_label=None, chunksize=None, dtype=None)
+       con.close()
+       end_time=time.time()-start_time
+       return render_template("adddata.html", msg = "Record inserted successfully", time=end_time)
 
 
 @app.route('/display')
@@ -97,10 +95,10 @@ def display():
         isCache = 'without Cache'
         start_time=time.time()
         con = sql.connect("database.db")
-        
+
         cur = con.cursor()
         cur.execute("select * from Earthquake")
-        
+
         rows = cur.fetchall();
         taken_time=time.time()-start_time
         print(time.time()-start_time,isCache)
@@ -122,7 +120,7 @@ def multiple():
             rlist = []
             isCache = 'with Cache'
             #print(isCache,mag)
-            
+
             rows = pickle.loads(r.get(mag))
             #rlist.append(rows)
             #print(rows)
@@ -136,23 +134,23 @@ def multiple():
             #start_time = time.time()
             con = sql.connect("database.db")
             cur = con.cursor()
-            
+
             #print(isCache,mag)
             mag1 = random.uniform(1, 8)
             cur.execute("select * from Earthquake where mag > "+ str(mag))
             rows = cur.fetchall();
             r.set(mag, pickle.dumps(rows))
             count1+=1
-            
+
             con.close()
-taken_time = time.time() - start_time
-print(count,count1)
-return render_template("display.html", data=rows, data1=taken_time, count=count,count1=count1)
+    taken_time = time.time() - start_time
+    print(count,count1)
+    return render_template("display.html", data=rows, data1=taken_time, count=count,count1=count1)
 
 
 @app.route('/net', methods = ['POST', 'GET'])
 def net():
-    
+
     if(request.method=='POST'):
         keyname = 'shevi'
         loop = request.form['loop']
@@ -165,17 +163,17 @@ def net():
         cur.execute("select distinct net from Earthquake where net like ?", (net+'%',))
         rows1 = cur.fetchall()
         con.close()
-        
+
         start_time = time.time()
         for i in range(int(loop)):
-            
+
             ran_num = random.randint(0, len(rows1) - 1)
             if r.exists(keyname + str(rows1[ran_num])):
                 isCache = "with Cache"
-                
+
                 res = pickle.loads(r.get(keyname + str(rows1[ran_num])))
                 count+=1
-            
+
             else:
                 net1 = str(rows1[ran_num])
                 isCache = "without Cache"
@@ -187,73 +185,73 @@ def net():
                 r.set(keyname + str(rows1[ran_num]), pickle.dumps(temp_res))
                 count1+=1
                 con.close()
-    # r.set(cache,pickle.dumps(rows))
-    taken_time = time.time() - start_time
+        # r.set(cache,pickle.dumps(rows))
+        taken_time = time.time() - start_time
         print(count,count1)
-        
+
         return render_template("net.html", data1=taken_time,count=count,count1=count1)
     return render_template("net.html")
 
-'''
-    loop = request.form['loop']
-    con = sql.connect("database.db")
-    cur = con.cursor()
-    cur.execute("select * from Earthquake where net like ?", (net+'%',))
-    rows = cur.fetchall()
-    for r1 in rows:
-    res.add(r1[11])
-    res=list(res)
-    for j in res:
-    j=j[1:]
-    print(j)
-    print(res,res[0])
-    
-    
-    
-    file = pd.read_csv("./static/all_month.csv")
-    net_values = file['net']
-    nn = set()
-    for i in list(net_values):
-    nn.add(i)
-    nn = list(nn)
-    check = {}
-    for i in range(len(nn)):
-    h = re.search(r'^a+', nn[i])
-    if h:
-    print(nn[i])
-    check[i] = nn[i]
-    print(check)
-    #print(random.choice(list(check.keys())), check[random.choice(list(check.keys()))])
-    
-    start_time = time.time()
-    #keyname = 'bye'
-    count=0
-    count1=0
-    
-    for i in range(int(loop)):
-    net1=random.randint(0,len(res)-1)
-    print(net1)
-    if (r.exists(keyname+str(net1))):
-    rlist = []
-    isCache = 'with Cache'
-    #print(isCache,mag)
-    
-    rows = pickle.loads(r.get(keyname+str(net1)))
-    count+=1
-    else:
-    rlist = []
-    isCache = 'without Cache'
-    con = sql.connect("database.db")
-    cur = con.cursor()
-    cur.execute("select * from Earthquake where net = ? ", res[net1],)
-    rows = cur.fetchall()
-    r.set(keyname+str(net1), pickle.dumps(rows))
-    count1+=1
-    
-    con.close()
-    taken_time = time.time() - start_time
-    print(count,count1)
     '''
+        loop = request.form['loop']
+        con = sql.connect("database.db")
+        cur = con.cursor()
+        cur.execute("select * from Earthquake where net like ?", (net+'%',))
+        rows = cur.fetchall()
+        for r1 in rows:
+            res.add(r1[11])
+        res=list(res)
+        for j in res:
+            j=j[1:]
+            print(j)
+        print(res,res[0])
+
+
+        
+        file = pd.read_csv("./static/all_month.csv")
+        net_values = file['net']
+        nn = set()
+        for i in list(net_values):
+            nn.add(i)
+        nn = list(nn)
+        check = {}
+        for i in range(len(nn)):
+            h = re.search(r'^a+', nn[i])
+            if h:
+                print(nn[i])
+                check[i] = nn[i]
+        print(check)
+        #print(random.choice(list(check.keys())), check[random.choice(list(check.keys()))])
+        
+        start_time = time.time()
+        #keyname = 'bye'
+        count=0
+        count1=0
+
+        for i in range(int(loop)):
+            net1=random.randint(0,len(res)-1)
+            print(net1)
+            if (r.exists(keyname+str(net1))):
+                rlist = []
+                isCache = 'with Cache'
+                #print(isCache,mag)
+
+                rows = pickle.loads(r.get(keyname+str(net1)))
+                count+=1
+            else:
+                rlist = []
+                isCache = 'without Cache'
+                con = sql.connect("database.db")
+                cur = con.cursor()
+                cur.execute("select * from Earthquake where net = ? ", res[net1],)
+                rows = cur.fetchall()
+                r.set(keyname+str(net1), pickle.dumps(rows))
+                count1+=1
+
+                con.close()
+        taken_time = time.time() - start_time
+        print(count,count1)
+        '''
 
 
 def convert_fig_to_html(fig):
@@ -273,7 +271,7 @@ def clusters():
     rows1 = []
     if(request.method=="POST"):
         cl=request.form['no_of_clusters']
-        
+
         query = 'SELECT latitude,longitude FROM Earthquake'
         con = sql.connect("database.db")
         cur = con.cursor()
@@ -284,7 +282,7 @@ def clusters():
         #le = preprocessing.LabelEncoder()
         #le.fit(rows.iloc[:,1])
         #rows.iloc[:,1]=le.transform(rows.iloc[:, 1])
-        
+
         #reading = pd.DataFrame(rows)
         rows = rows.dropna()
         k = KMeans(n_clusters=int(cl)).fit(rows)
@@ -294,17 +292,17 @@ def clusters():
         #fig,ax=plt.subplots()
         plt.xlim([min(rows.iloc[:,0])-10,max(rows.iloc[:,0])])
         plt.ylim([min(rows.iloc[:,1])-10,max(rows.iloc[:,1])])
-        
+
         fig = plt.figure()
         plt.scatter(rows.iloc[:,0],rows.iloc[:,1],c=labels)
-        
+
         plt.scatter(centers[:, 0], centers[:, 1], c='red', s=200, marker='+')
         plot = convert_fig_to_html(fig)
         #plt.scatter(hi['mag'], hi['place'],c=5,cmap=plt.cm.Paired)
         #fig.savefig('static/img.png')
-        
+
         #plt.show()
-        
+
         return render_template('cluster1.html', data=centers, data1=plot.decode('utf8'))
     return render_template('cluster1.html')
 

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post">
+    Enter first letter of net: <input type="text" name="net">
+    Enter loop no: <input type="text" name="loop">
+    <input type="submit">Search
+</form>
+<table border="1">
+
+
+<tr><td>Time taken {{ data1 }}</td>
+    <td>Count with Cache {{ count }}</td>
+    <td>Count without Cache {{ count1 }}</td></tr>
+    {% for row in data %}
+    <tr>
+    <td>{{ row[11] }}</td>
+
+
+    </tr>
+    {% endfor %}
+
+</table>
+<a href="/">Home</a>
+
+</body>
+</html>
