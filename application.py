@@ -34,6 +34,7 @@ print(r)
 '''
     file = pd.read_csv("./static/all_month.csv")
     r.set(1,file)
+    
     #print(r.get(1))
     user = {"Name":"Pradeep", "Company":"SCTL", "Address":"Mumbai", "Location":"RCP"}
     
