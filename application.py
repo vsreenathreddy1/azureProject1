@@ -21,7 +21,7 @@ con = sql.connect("database.db")
 myHostname = "Saii.redis.cache.windows.net"
 myPassword = "7Z6Az0CdHRKCxGb3+a+XLxU52cc9xMIZPkXjJAfAn5U="
 
-r = redis.StrictRedis(host=myHostname, port=6380,password=myPassword,ssl=True)
+r = redis.StrictRedis(host=myHostname, port=6380,password=myPassword,ssl=False)
 print(r)
 
 
@@ -77,7 +77,7 @@ def adddata():
         csv = request.files['myfile']
         file = pd.read_csv(csv)
         start_time=time.time()
-        file.to_sql('Earthquake', con, schema=None, if_exists='replace', index=True, index_label=None, chunksize=None, dtype=None)
+        file.to_sql('names', con, schema=None, if_exists='replace', index=True, index_label=None, chunksize=None, dtype=None)
         con.close()
         end_time=time.time()-start_time
         return render_template("adddata.html", msg = "Record inserted successfully", time=end_time)
