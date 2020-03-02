@@ -43,7 +43,7 @@ def addrec():
         con = sql.connect("database.db")
         csv = request.files['myfile']
         file = pd.read_csv(csv)
-        file.to_sql('voting', con, schema=None, if_exists='replace', index=True, index_label=None, chunksize=None, dtype=None)
+        file.to_sql('names', con, schema=None, if_exists='replace', index=True, index_label=None, chunksize=None, dtype=None)
         con.close()
         return render_template('home.html')
 
