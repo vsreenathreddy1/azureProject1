@@ -15,9 +15,6 @@ from matplotlib import pyplot as mpld3
 from sklearn.cluster import KMeans
 from scipy.spatial import distance
 
-
-app = Flask(__name__)
-
 con = sql.connect("database.db")
 rd = redis.StrictRedis(host='Saii.redis.cache.windows.net', port=6380, db=0,password='7Z6Az0CdHRKCxGb3+a+XLxU52cc9xMIZPkXjJAfAn5U=',ssl=True)
 
