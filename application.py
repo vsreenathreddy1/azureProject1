@@ -81,7 +81,7 @@ def adddata():
         csv = request.files['myfile']
         file = pd.read_csv(csv)
         start_time=time.time()
-        file.to_sql('names', con, schema=None, if_exists='replace', index=True, index_label=None, chunksize=None, dtype=None)
+        file.to_sql('Earthquake', con, schema=None, if_exists='replace', index=True, index_label=None, chunksize=None, dtype=None)
         con.close()
         end_time=time.time()-start_time
         return render_template("adddata.html", msg = "Record inserted successfully", time=end_time)
@@ -90,27 +90,26 @@ def adddata():
 @app.route('/display')
 def display():
     keyname = 'hi'
+    start_time = time.time()
     if(r.exists(keyname)):
         isCache = 'with Cache'
-        start_time = time.time()
         rows = pickle.loads(r.get(keyname))
-        taken_time = time.time() - start_time
         print(time.time() - start_time,isCache)
         r.delete(keyname)
     else:
         isCache = 'without Cache'
-        start_time=time.time()
         con = sql.connect("database.db")
         
         cur = con.cursor()
         cur.execute("select * from Earthquake")
         
         rows = cur.fetchall();
-        taken_time=time.time()-start_time
         print(time.time()-start_time,isCache)
         print(len(rows))
         con.close()
+        print(time.time() - start_time,isCache)
         r.set(keyname, pickle.dumps(rows))
+    taken_time=time.time()-start_time
     return render_template("display.html", data=rows, data1=taken_time, isCache=isCache)
 
 @app.route('/multiple')
@@ -125,13 +124,13 @@ def multiple():
         if (r.exists(mag)):
             rlist = []
             isCache = 'with Cache'
-            #print(isCache,mag)
+            print(isCache,mag)
             
             rows = pickle.loads(r.get(mag))
             #rlist.append(rows)
             #print(rows)
             #taken_time = time.time() - start_time
-            #print(time.time() - start_time, isCache)
+            print(time.time() - start_time, isCache)
             #r.delete(str(i))
             count+=1
         else:
@@ -151,7 +150,7 @@ def multiple():
             con.close()
     taken_time = time.time() - start_time
     print(count,count1)
-    return render_template("display.html", data=rows, data1=taken_time, count=count,count1=count1)
+    return render_template("display.html", data=rows, data1=taken_time, count=count,count1=count1, isCache=isCache)
 
 @app.route('/net', methods = ['POST', 'GET'])
 def net():
