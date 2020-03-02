@@ -165,35 +165,34 @@ def clustering_scatter():
     n2  = int(request.form["n2"])
     keyname = 'hii'
     start_time = time.time()
-    for i in range(100):
-        #mag = "{:.1f}".format(random.uniform(1, 8))
-        #mag = round(random.uniform(1, 8),2)
-        if (r.exists(keyname)):
-            rlist = []
-            isCache = 'with Cache'
-            print(isCache,keyname)
-            
-            rows = pickle.loads(r.get(keyname))
-            #rlist.append(rows)
-            #print(rows)
-            #taken_time = time.time() - start_time
-            print(time.time() - start_time, isCache)
-            #r.delete(str(i))
-            
-        else:
-            rlist = []
-            isCache = 'without Cache'
-            #start_time = time.time()
-            con = sql.connect("database.db")
-            cur = con.cursor()
-            
-            #print(isCache,mag)
-            #mag1 = random.uniform(1, 8)
-            print("select * from qi where mag between "+ str(n1)+" and "+str(n2))
-            cur.execute("select * from qi where mag between "+ str(n1)+" and "+str(n2))
-            rows = cur.fetchall();
-            r.set(keyname, pickle.dumps(rows))
-            con.close()
+    #mag = "{:.1f}".format(random.uniform(1, 8))
+    #mag = round(random.uniform(1, 8),2)
+    if (r.exists(keyname)):
+        rlist = []
+        isCache = 'with Cache'
+        print(isCache,keyname)
+        
+        rows = pickle.loads(r.get(keyname))
+        #rlist.append(rows)
+        #print(rows)
+        #taken_time = time.time() - start_time
+        print(time.time() - start_time, isCache)
+        #r.delete(str(i))
+        
+    else:
+        rlist = []
+        isCache = 'without Cache'
+        #start_time = time.time()
+        con = sql.connect("database.db")
+        cur = con.cursor()
+        
+        #print(isCache,mag)
+        #mag1 = random.uniform(1, 8)
+        print("select * from qi where mag between "+ str(n1)+" and "+str(n2))
+        cur.execute("select * from qi where mag between "+ str(n1)+" and "+str(n2))
+        rows = cur.fetchall();
+        r.set(keyname, pickle.dumps(rows))
+        con.close()
     taken_time = time.time() - start_time
     return render_template("display.html", data=rows, data1=taken_time, isCache=isCache)
 

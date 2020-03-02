@@ -11,10 +11,9 @@
 
 {{ data1 }}
 {{ isCache }}
-    {% for row in data %}
+    {% for rows in data %}
     <tr>
-    <td>{{ row[5] }}</td>
-
+        <td>{{ rows }}</td>
 
     </tr>
     {% endfor %}
