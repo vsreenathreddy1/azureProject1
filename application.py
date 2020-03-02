@@ -145,10 +145,9 @@ def multiple():
             count1+=1
             
             con.close()
-taken_time = time.time() - start_time
-print(count,count1)
-return render_template("display.html", data=rows, data1=taken_time, count=count,count1=count1)
-
+    taken_time = time.time() - start_time
+    print(count,count1)
+    return render_template("display.html", data=rows, data1=taken_time, count=count,count1=count1)
 
 @app.route('/net', methods = ['POST', 'GET'])
 def net():
@@ -187,8 +186,8 @@ def net():
                 r.set(keyname + str(rows1[ran_num]), pickle.dumps(temp_res))
                 count1+=1
                 con.close()
-    # r.set(cache,pickle.dumps(rows))
-    taken_time = time.time() - start_time
+        # r.set(cache,pickle.dumps(rows))
+        taken_time = time.time() - start_time
         print(count,count1)
         
         return render_template("net.html", data1=taken_time,count=count,count1=count1)
