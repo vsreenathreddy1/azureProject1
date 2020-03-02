@@ -142,7 +142,7 @@ def multiple():
             
             #print(isCache,mag)
             mag1 = random.uniform(1, 8)
-            cur.execute("select * from Earthquake where mag > "+ str(mag))
+            cur.execute("select mag from Earthquake where mag > "+ str(mag))
             rows = cur.fetchall();
             r.set(mag, pickle.dumps(rows))
             count1+=1
