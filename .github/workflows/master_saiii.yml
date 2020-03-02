@@ -33,5 +33,5 @@ jobs:
       with:
         app-name: 'saiii'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_83c3982890ea49918bb704cdcbda858d }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_a4a82ff7a51e4858b62253ac0e17d44f }}
         package: './myapp.zip'
