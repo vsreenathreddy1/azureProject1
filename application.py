@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 import sqlite3 as sql
 import pandas as pd
 import time
-import redis
+import redis as redis
 import csv
 import pickle
 import random
@@ -18,10 +18,14 @@ con = sql.connect("database.db")
 
 #port = int(os.getenv('PORT', 8000))
 
-myHostname = "Saii.redis.cache.windows.net"
-myPassword = "7Z6Az0CdHRKCxGb3+a+XLxU52cc9xMIZPkXjJAfAn5U="
+myHostname = "saiii.redis.cache.windows.net"
+myPassword = "DlAGHScUdv36nwvZL2jpP4KPVo6fuuc0v0u1v4oPOMk="
 
-r = redis.StrictRedis(host=myHostname, port=6380,password=myPassword,ssl=False)
+#r = redis.StrictRedis(host=myHostname, port=6380,password=myPassword,ssl_cert_reqs=None)
+
+pool = redis.ConnectionPool(host='Saiii.redis.cache.windows.net', port=6380, password='DlAGHScUdv36nwvZL2jpP4KPVo6fuuc0v0u1v4oPOMk=', db=0, connection_class=redis.SSLConnection, ssl_cert_reqs='none')
+r = redis.Redis(connection_pool=pool)
+
 print(r)
 
 
