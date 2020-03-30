@@ -19,8 +19,13 @@ app = Flask(__name__)
 myHostname = "saiii.redis.cache.windows.net"
 myPassword = "DlAGHScUdv36nwvZL2jpP4KPVo6fuuc0v0u1v4oPOMk="
 
-r = redis.StrictRedis(host=myHostname, port=6379,password=myPassword,ssl=True)
+r = redis.StrictRedis(host=myHostname, port=6380,password=myPassword,ssl=True)
 print(r)
+
+
+@app.route('/')
+def home():
+    return render_template('home.html')
 
 
 @app.route('/new', methods=['GET', 'POST'])
@@ -70,9 +75,6 @@ for i in range(len(all)):
 value = r.get(2)
 print(value)
 '''
-@app.route('/')
-def home():
-    return render_template('home.html')
 
 
 @app.route('/upload')
