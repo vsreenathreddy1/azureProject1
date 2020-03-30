@@ -42,7 +42,7 @@ def new():
         while result != False:
             rows.append(result.copy())
         print(rows)
-        return render_template("new.html", data=result)
+        return render_template("new.html", data=rows)
     return render_template("new.html")
 
 @app.route('/upload')
