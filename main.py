@@ -16,15 +16,27 @@ app = Flask(__name__)
 
 #port = int(os.getenv('PORT', 8000))
 
-myHostname = "shevi.redis.cache.windows.net"
-myPassword = "TzYq7QopogIx7JgZHs2j0V6ZKa88CAlV89TwnLhdAGY="
+myHostname = "saiii.redis.cache.windows.net"
+myPassword = "DlAGHScUdv36nwvZL2jpP4KPVo6fuuc0v0u1v4oPOMk="
 
-r = redis.StrictRedis(host=myHostname, port=6380,password=myPassword,ssl=True)
+r = redis.StrictRedis(host=myHostname, port=6379,password=myPassword,ssl=True)
 print(r)
 
 
-
-
+@app.route('/new', methods=['GET', 'POST'])
+def new():
+    rows = []
+    if request.method == 'POST':
+        
+        
+        rows1 = []
+        mag = request.form['lat']
+        result = lat+86
+        while result != False:
+            rows.append(result.copy())
+        print(rows)
+        return render_template('new.html', data=rows)
+    return render_template('new.html')
 '''
 file = pd.read_csv("./static/all_month.csv")
 r.set(1,file)
