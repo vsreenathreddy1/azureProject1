@@ -29,46 +29,21 @@ r = redis.Redis(connection_pool=pool)
 print(r)
 
 
-
-
-'''
-    file = pd.read_csv("./static/all_month.csv")
-    r.set(1,file)
-    
-    #print(r.get(1))
-    user = {"Name":"Pradeep", "Company":"SCTL", "Address":"Mumbai", "Location":"RCP"}
-    
-    
-    hi=pd.read_csv("./static/all_month.csv")
-    print(hi.head())
-    cols=[]
-    for col in hi.columns:
-    #print(col)
-    cols.append(col)
-    r.set(col,hi[col])
-    r.hmset('bye',cols,hi[col])
-    #print(r.get(col))
-    print(r.get("time"))
-    
-    print(r.get('bye'))
-    r.hmset("pythonDict", user)
-    print(type(r.hgetall("pythonDict")))
-    #print(r.hgetall("pythonDict"))
-    r.set('name',r.hmget("pythonDict","Name"))
-    #print(r.get('name'))
-    #print(r.hmget("pythonDict","Name"))
-    '''
-'''
-    for i in range(len(all)):
-    r.set(i, all[i])
-    
-    value = r.get(2)
-    print(value)
-    '''
 @app.route('/')
 def home():
     return render_template('home.html')
 
+@app.route('/new', methods=['GET', 'POST'])
+def new():
+    rows = []
+    if request.method == 'POST':
+        mag = request.form['lat']
+        result = int(mag)+86
+        while result != False:
+            rows.append(result.copy())
+        print(rows)
+        return render_template("new.html", data=result)
+    return render_template("new.html")
 
 @app.route('/upload')
 def upload_csv():
