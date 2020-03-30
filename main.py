@@ -32,16 +32,13 @@ def home():
 def new():
     rows = []
     if request.method == 'POST':
-        
-        
-        rows1 = []
         mag = request.form['lat']
-        result = mag+86
+        result = int(mag)+86
         while result != False:
             rows.append(result.copy())
         print(rows)
-        return render_template('new.html', data=rows)
-    return render_template('new.html')
+        return render_template("new.html", data=result)
+    return render_template("new.html")
 '''
 file = pd.read_csv("./static/all_month.csv")
 r.set(1,file)
