@@ -36,7 +36,7 @@ def new():
         
         rows1 = []
         mag = request.form['lat']
-        result = lat+86
+        result = mag+86
         while result != False:
             rows.append(result.copy())
         print(rows)
