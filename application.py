@@ -33,14 +33,14 @@ print(r)
 def home():
     return render_template('home.html')
 
-@app.route('/new', methods=['GET', 'POST'])
+@app.route('/new', methods=['POST', 'GET'])
 def new():
-    rows = []
+    row = []
     if request.method == 'POST':
-        mag = request.form['lat']
-        result = mag+86
-        while result != False:
-            rows.append(result.copy())
+        mag = int(request.form['number'])
+        rows = str(mag+86)
+        if rows != False:
+            row.append(rows)
         print(rows)
         return render_template("new.html", data=rows)
     return render_template("new.html")
@@ -331,4 +331,4 @@ def clusters():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug = True)
