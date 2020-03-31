@@ -38,7 +38,9 @@ def new():
     row = []
     if request.method == 'POST':
         mag = int(request.form['number'])
-        rows = str(mag+86)
+        r1= str(mag+86)
+        r2= str(mag)
+        rows = r2+' + 86='+r1
         if rows != False:
             row.append(rows)
         print(rows)
