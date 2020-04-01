@@ -315,8 +315,8 @@ def clusters():
         labels = k.predict(rows)
         #print(labels)
         #fig,ax=plt.subplots()
-        plt.xlim([min(rows.iloc[:,0])-10,max(rows.iloc[:,0])])
-        plt.ylim([min(rows.iloc[:,1])-10,max(rows.iloc[:,1])])
+        plt.xlim([float(min(rows.iloc[:,0]))-10,float(max(rows.iloc[:,0]))])
+        plt.ylim([float(min(rows.iloc[:,1]))-10,float(max(rows.iloc[:,1]))])
         
         fig = plt.figure()
         plt.scatter(rows.iloc[:,0],rows.iloc[:,1],c=labels)
