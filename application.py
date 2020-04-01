@@ -330,6 +330,8 @@ def clusters():
         #Bread, notveg, 8
         
         #fig.savefig('static/img.png')
+        
+        
         print (type)
         if type == 'veg':
             print (type)

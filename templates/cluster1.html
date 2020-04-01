@@ -9,19 +9,19 @@
 <h1>1001663586</h1>
 <br>
 <form method="POST">
-    Enter the no of clusters <input type="text" name="no_of_clusters">
+    Enter veg or notveg <input type="text" name="no_of_clusters">
     <input type="submit">
 </form>
 
 <table border="1">
-Centroids:
+chart:
     {% for rows in data %}
     <tr>
         <td>{{ rows }}</td>
 
     </tr>
     {% endfor %}
-<img src="data:image/png;base64,{{ data1 }}">
+<img src="data:image/png;base64,{{ data1 }}" height="420" width="420">
 
 
 
