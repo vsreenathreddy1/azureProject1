@@ -296,39 +296,66 @@ def clusters():
     rows1 = []
     if(request.method=="POST"):
         cl=request.form['no_of_clusters']
-        
+        type = str(cl)
         query = 'SELECT latitude,longitude FROM Earthquake'
         con = sql.connect("database.db")
         cur = con.cursor()
         cur.execute(query)
         rows = cur.fetchall()
         rows = pd.DataFrame(rows)
-        hi = pd.read_csv("./static/all_month.csv")
+        #hi = pd.read_csv("./static/all_month.csv")
         #le = preprocessing.LabelEncoder()
         #le.fit(rows.iloc[:,1])
         #rows.iloc[:,1]=le.transform(rows.iloc[:, 1])
         
         #reading = pd.DataFrame(rows)
         rows = rows.dropna()
-        k = KMeans(n_clusters=int(cl)).fit(rows)
-        centers=k.cluster_centers_
-        labels = k.predict(rows)
+        #k = KMeans(n_clusters=int(cl)).fit(rows)
+        #centers=k.cluster_centers_
+        #labels = k.predict(rows)
         #print(labels)
         #fig,ax=plt.subplots()
-        plt.xlim([float(min(rows.iloc[:,0]))-10,float(max(rows.iloc[:,0]))])
-        plt.ylim([float(min(rows.iloc[:,1]))-10,float(max(rows.iloc[:,1]))])
+        #plt.xlim([float(min(rows.iloc[:,0]))-10,float(max(rows.iloc[:,0]))])
+        #plt.ylim([float(min(rows.iloc[:,1]))-10,float(max(rows.iloc[:,1]))])
         
         fig = plt.figure()
-        plt.scatter(rows.iloc[:,0],rows.iloc[:,1],c=labels)
-        
-        plt.scatter(centers[:, 0], centers[:, 1], c='red', s=200, marker='+')
-        plot = convert_fig_to_html(fig)
+        #plt.bar(rows.iloc[:,0],rows.iloc[:,1],c=labels)
+        #plt.bar(centers[:, 0], centers[:, 1], c='red', s=200, marker='+')
+        #plt.bar(rows.iloc[:,0],rows.iloc[:,1])
+        #plt.bar(centers[:, 0], centers[:, 1], c='red', s=200, marker='+')
+        #plot = convert_fig_to_html(fig)
         #plt.scatter(hi['mag'], hi['place'],c=5,cmap=plt.cm.Paired)
-        #fig.savefig('static/img.png')
         
+        #Cheese, notveg, 6
+        #Bread, notveg, 8
+        
+        #fig.savefig('static/img.png')
+        print (type)
+        if type == 'veg':
+            print (type)
+            labels = 'brocoli', 'Cabbage', 'Coke'
+            sizes = [5, 2, 10]
+            colors = ['gold', 'yellowgreen', 'lightcoral']
+            explode = (0.1, 0, 0)  # explode 1st slice
+            plt.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%', shadow=True, startangle=140)
+            plt.axis('equal')
+            plot = convert_fig_to_html(fig)
+            return render_template('cluster1.html', data1=plot.decode('utf8'))
+        if type == 'notveg':
+            labels = 'Cheese', 'Bread'
+            sizes = [6, 8]
+            colors = ['gold', 'yellowgreen']
+            explode = (0, 0)  # explode 1st slice
+            plt.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%', shadow=True, startangle=140)
+            plt.axis('equal')
+            plot = convert_fig_to_html(fig)
+            return render_template('cluster1.html', data1=plot.decode('utf8'))
+                
+        # Plot
+        #plt.show()
         #plt.show()
         
-        return render_template('cluster1.html', data=centers, data1=plot.decode('utf8'))
+        
     return render_template('cluster1.html')
 
 
