@@ -252,66 +252,28 @@ def q1():
 
 
 
-'''
-    loop = request.form['loop']
-    con = sql.connect("database.db")
-    cur = con.cursor()
-    cur.execute("select * from Earthquake where net like ?", (net+'%',))
-    rows = cur.fetchall()
-    for r1 in rows:
-    res.add(r1[11])
-    res=list(res)
-    for j in res:
-    j=j[1:]
-    print(j)
-    print(res,res[0])
+@app.route('/rangecsv1', methods=['GET', 'POST'])
+def rangecsv1():
+    # connect to DB2
+    #cur = db2conn.cursor()
     
+    if request.method == 'POST':
+        name = request.form['name1']
+        mag1 = int(request.form['mag1'])
+        mag2 = int(request.form['mag2'])
+        
+        df1 =pd.read_csv('quakes.csv', encoding='latin-1')
+        ranges = []
+        dfq = df1[df1.net == name]
+        dfq = dfq[(dfq.mag > mag1) & (dfq.mag < mag2)]
+        for x in range(mag1,mag2):
+            ranges.append(x)
     
-    
-    file = pd.read_csv("./static/all_month.csv")
-    net_values = file['net']
-    nn = set()
-    for i in list(net_values):
-    nn.add(i)
-    nn = list(nn)
-    check = {}
-    for i in range(len(nn)):
-    h = re.search(r'^a+', nn[i])
-    if h:
-    print(nn[i])
-    check[i] = nn[i]
-    print(check)
-    #print(random.choice(list(check.keys())), check[random.choice(list(check.keys()))])
-    
-    start_time = time.time()
-    #keyname = 'bye'
-    count=0
-    count1=0
-    
-    for i in range(int(loop)):
-    net1=random.randint(0,len(res)-1)
-    print(net1)
-    if (r.exists(keyname+str(net1))):
-    rlist = []
-    isCache = 'with Cache'
-    #print(isCache,mag)
-    
-    rows = pickle.loads(r.get(keyname+str(net1)))
-    count+=1
-    else:
-    rlist = []
-    isCache = 'without Cache'
-    con = sql.connect("database.db")
-    cur = con.cursor()
-    cur.execute("select * from Earthquake where net = ? ", res[net1],)
-    rows = cur.fetchall()
-    r.set(keyname+str(net1), pickle.dumps(rows))
-    count1+=1
-    
-    con.close()
-    taken_time = time.time() - start_time
-    print(count,count1)
-    '''
+        dfq = dfq.groupby(pd.cut(dfq.mag, ranges)).count()
+        dfq = dfq[['time']]
+        rows=[]
+        return render_template('rangecsv1.html', ci=[dfq.to_html(classes='data', header="true")])
+    return render_template('rangecsv1.html')
 
 
 def convert_fig_to_html(fig):
