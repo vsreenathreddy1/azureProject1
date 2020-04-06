@@ -297,8 +297,8 @@ def rangecsv2():
         
         plot = convert_fig_to_html(ax)
         rows=[]
-        return render_template('rangecsv2.html')
-    return render_template('rangecsv2.html',data1=plot.decode('utf8'))
+        return render_template('rangecsv2.html',data1=plot.decode('utf8'))
+    return render_template('rangecsv2.html')
 
 
 @app.route('/pie', methods=['GET', 'POST'])
