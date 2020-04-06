@@ -297,6 +297,7 @@ def rangecsv2():
         
         plot = convert_fig_to_html(ax)
         rows=[]
+        return render_template('rangecsv2.html')
     return render_template('rangecsv2.html',data1=plot.decode('utf8'))
 
 
@@ -325,17 +326,12 @@ def rangecsv3():
         ax = dfq.plot(kind='barh', title ="bar plot", figsize=(15, 10), legend=True, fontsize=12,    color=my_colors)
         plot = convert_fig_to_html(ax)
         rows=[]
-    return render_template('rangecsv2.html',data1=plot.decode('utf8'))
+        return render_template('rangecsv2.html',data1=plot.decode('utf8'))
+    return render_template('rangecsv2.html')
 
 
 
 
-return render_template('rangecsv2.html')
-
-
-
-
-return render_template('rangecsv2.html')
 def convert_fig_to_html(fig):
     from io import BytesIO
     figfile = BytesIO()
