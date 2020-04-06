@@ -217,6 +217,41 @@ def net():
         return render_template("net.html", data1=taken_time,count=count,count1=count1)
     return render_template("net.html")
 
+
+@app.route('/q1search')
+def q1search():
+    return render_template('q1search.html')
+
+@app.route('/q1',methods = ['POST', 'GET'])
+def q1():
+    lat1 = float(request.form['lat1'])
+    lat2 = float(request.form['lat2'])
+    net = str(request.form['num'])
+    result = []
+    lat1_random = lat1
+    lat2_random = lat1+1
+    
+    for i in range(round(lat2)):
+        #lat1_random = round(random.uniform(lat1,lat2),2)
+        #lat2_random = round(random.uniform(lat1,lat2),2)
+        if lat1_random <= lat2:
+            query = "select count(*) from Earthquake where net like '"+str(net)+"' and mag between '"+str(lat1_random)+"' and '"+str(lat2_random)+"'"
+            con = sql.connect("database.db")
+            cur = con.cursor()
+            cur.execute(query)
+            rows = cur.fetchone()
+            result.append(net)
+            result.append(lat1_random)
+            result.append(rows)
+            lat1_random = lat1_random+1
+            lat2_random = lat1_random+1
+
+    
+    return render_template("q1result.html",row = result)
+
+
+
+
 '''
     loop = request.form['loop']
     con = sql.connect("database.db")
