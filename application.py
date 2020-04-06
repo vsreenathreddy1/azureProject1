@@ -251,29 +251,6 @@ def q1():
 
 
 
-@app.route('/rangecsv1', methods=['GET', 'POST'])
-def rangecsv1():
-    # connect to DB2
-    #cur = db2conn.cursor()
-    
-    if request.method == 'POST':
-        name = request.form['name1']
-        mag1 = int(request.form['mag1'])
-        mag2 = int(request.form['mag2'])
-        
-        df1 =pd.read_csv('quakes.csv', encoding='latin-1')
-        ranges = []
-        dfq = df1[df1.net == name]
-        dfq = dfq[(dfq.mag > mag1) & (dfq.mag < mag2)]
-        for x in range(mag1,mag2):
-            ranges.append(x)
-    
-        dfq = dfq.groupby(pd.cut(dfq.mag, ranges)).count()
-        dfq = dfq[['time']]
-        rows=[]
-        return render_template('rangecsv1.html', ci=[dfq.to_html(classes='data', header="true")])
-    return render_template('rangecsv1.html')
-
 @app.route('/pie', methods=['GET', 'POST'])
 def rangecsv2():
     
@@ -314,16 +291,15 @@ def rangecsv3():
         df1 =pd.read_csv('quakes.csv', encoding='latin-1')
         
         ranges = []
-        dfq = df1[df1.net == name]
-        dfq = dfq[(dfq.mag > mag1) & (dfq.mag < mag2)]
+        bars = df1[df1.net == name]
+        bars = bars[(bars.mag > mag1) & (bars.mag < mag2)]
         for x in range(mag1,mag2):
             ranges.append(x)
     
-        dfm = dfq.groupby(pd.cut(dfq.mag, ranges)).count()
-        dfq = dfm[['time']]
-        my_colors = 'rgbkymc'  #red, green, blue, black, etc.
-        
-        ax = dfq.plot(kind='barh', title ="bar plot", figsize=(15, 10), legend=True, fontsize=12,    color=my_colors)
+        dfm = bars.groupby(pd.cut(bars.mag, ranges)).count()
+        bars = dfm[['time']]
+        colorss = 'rgbkymc'
+        ax = bars.plot(kind='barh', title ="bar plot", figsize=(15, 10), legend=True, fontsize=12,    color=colorss)
         plot = convert_fig_to_html(ax)
         rows=[]
         return render_template('rangecsv2.html',data1=plot.decode('utf8'))
