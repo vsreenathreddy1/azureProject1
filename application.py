@@ -210,7 +210,6 @@ def net():
                 r.set(keyname + str(rows1[ran_num]), pickle.dumps(temp_res))
                 count1+=1
                 con.close()
-        # r.set(cache,pickle.dumps(rows))
         taken_time = time.time() - start_time
         print(count,count1)
         
