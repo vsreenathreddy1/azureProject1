@@ -275,7 +275,68 @@ def rangecsv1():
         return render_template('rangecsv1.html', ci=[dfq.to_html(classes='data', header="true")])
     return render_template('rangecsv1.html')
 
+@app.route('/rangecsv2', methods=['GET', 'POST'])
+def rangecsv2():
+    
+    if request.method == 'POST':
+        name = request.form['name1']
+        mag1 = int(request.form['mag1'])
+        mag2 = int(request.form['mag2'])
+        
+        df1 =pd.read_csv('quakes.csv', encoding='latin-1')
+        
+        ranges = []
+        dfq = df1[df1.net == name]
+        dfq = dfq[(dfq.mag > mag1) & (dfq.mag < mag2)]
+        for x in range(mag1,mag2):
+            ranges.append(x)
+    
+        dfm = dfq.groupby(pd.cut(dfq.mag, ranges)).count()
+        dfq = dfm[['time']]
+        ax = dfm.plot.pie(y='time', figsize=(10, 5))
+        ax.get_legend().remove()
+        
+        plot = convert_fig_to_html(ax)
+        rows=[]
+    return render_template('rangecsv2.html',data1=plot.decode('utf8'))
 
+
+@app.route('/rangecsv3', methods=['GET', 'POST'])
+def rangecsv3():
+    # connect to DB2
+    #cur = db2conn.cursor()
+    
+    if request.method == 'POST':
+        name = request.form['name1']
+        mag1 = int(request.form['mag1'])
+        mag2 = int(request.form['mag2'])
+        
+        df1 =pd.read_csv('quakes.csv', encoding='latin-1')
+        
+        ranges = []
+        dfq = df1[df1.net == name]
+        dfq = dfq[(dfq.mag > mag1) & (dfq.mag < mag2)]
+        for x in range(mag1,mag2):
+            ranges.append(x)
+    
+        dfm = dfq.groupby(pd.cut(dfq.mag, ranges)).count()
+        dfq = dfm[['time']]
+        my_colors = 'rgbkymc'  #red, green, blue, black, etc.
+        
+        ax = dfq.plot(kind='barh', title ="bar plot", figsize=(15, 10), legend=True, fontsize=12,    color=my_colors)
+        plot = convert_fig_to_html(ax)
+        rows=[]
+    return render_template('rangecsv2.html',data1=plot.decode('utf8'))
+
+
+
+
+return render_template('rangecsv2.html')
+
+
+
+
+return render_template('rangecsv2.html')
 def convert_fig_to_html(fig):
     from io import BytesIO
     figfile = BytesIO()
