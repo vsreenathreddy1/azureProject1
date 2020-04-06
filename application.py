@@ -275,7 +275,7 @@ def rangecsv1():
         return render_template('rangecsv1.html', ci=[dfq.to_html(classes='data', header="true")])
     return render_template('rangecsv1.html')
 
-@app.route('/rangecsv2', methods=['GET', 'POST'])
+@app.route('/bar', methods=['GET', 'POST'])
 def rangecsv2():
     
     if request.method == 'POST':
@@ -301,7 +301,7 @@ def rangecsv2():
     return render_template('rangecsv2.html',data1=plot.decode('utf8'))
 
 
-@app.route('/rangecsv3', methods=['GET', 'POST'])
+@app.route('/pie', methods=['GET', 'POST'])
 def rangecsv3():
     # connect to DB2
     #cur = db2conn.cursor()
